@@ -5,6 +5,7 @@ var screenShotEl = document.querySelector('#screenshot');
 var lastBtn = document.querySelector('#last');
 var nextBtn = document.querySelector('#next');
 var imgEl = document.querySelector('#imgEl');
+var gameInfoBody = document.querySelector('#gameInfoBody')
 
 function getGameInfo(event) {
     var gameName = document.querySelector('#gameName');
@@ -22,9 +23,30 @@ function getGameInfo(event) {
 };
 
 function displayScreenshot(data) {
+    gameInfoBody.innerHTML = null;
     imgEl.src = data.results[0].short_screenshots[i].image;
-    //imgEl.style.width = '100%';
-    //imgEl.style.height = '100%';
+
+    var nameEl = document.createElement('h1');
+    var esrbEl = document.createElement('p');
+    // var genresEl = document.createElement('p');
+    var metacriticEl = document.createElement('p');
+    var ratingScoreEl = document.createElement('p');
+    // var ratingsEl = document.createElement('p');
+
+    nameEl.className = "text-center"
+
+    nameEl.textContent = data.results[0].name;
+    esrbEl.textContent = "ESRB Rating: " + data.results[0].esrb_rating.name;
+    // genresEl.textContent = data.results[0].name;
+    metacriticEl.textContent = "Metacritic: " + data.results[0].metacritic;
+    ratingScoreEl.textContent = "Rating: " + data.results[0].rating;
+    // ratingsEl.textContent = data.results[0].name;
+
+    gameInfoBody.appendChild(nameEl);
+    gameInfoBody.appendChild(esrbEl);
+    gameInfoBody.appendChild(metacriticEl);
+    gameInfoBody.appendChild(ratingScoreEl);
+    
 };
 
 function prevImg() {
