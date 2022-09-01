@@ -35,19 +35,16 @@ function displayScreenshot(data) {
     var ratingScoreEl = document.createElement('p');
     var ratingshEl = document.createElement('h4');
     var esrbhEl = document.createElement('h4');
-    // var ratingsEl = document.createElement('p');
 
     nameEl.className = "text-center"
 
     nameEl.textContent = data.results[0].name;
     esrbEl.textContent = "ESRB Rating: " + data.results[0].esrb_rating.name;
-    // genresEl.textContent = data.results[0].name;
     metacriticEl.textContent = "Metacritic: " + data.results[0].metacritic;
     ratingScoreEl.textContent = "Rating: " + data.results[0].rating;
     genreshEl.textContent = 'Genres: ';
     ratingshEl.textContent = 'Ratings: ';
     esrbhEl.textContent = 'ESRB: ';
-    // ratingsEl.textContent = data.results[0].name;
 
     gameInfoBody.appendChild(nameEl);
     gameInfoBody.appendChild(esrbhEl);
@@ -89,42 +86,43 @@ function nextImg() {
     getGameInfo(event);
 };
 
-submitButton.addEventListener('click', getGameInfo);
-lastBtn.addEventListener('click', prevImg);
-nextBtn.addEventListener('click', nextImg);
-
-
-
-function displayGiphy(data){
-    for (var g = 0; g > 5; g++){
-        var divEl = document.createElement('div');
-        divEl.className = 'card col-12 col-md-2 m-4';
-        divEl.style.width = '18rem';
+function displayGiphy(data) {
+    giphySection.innerHTML = null;
+    for (var g = 0; g < 5; g++){
+        var divGEl = document.createElement('div');
+        var imgGEl = document.createElement('img');
         
-        var imgEl = document.createElement('img');
-        imgEl.className = 'card-img-top';
-        imgEl.src = data.data[g].images.original.url;
+        divGEl.className = 'card col-12 col-md-2 m-4 border-0';
+        divGEl.style.width = '18rem';
+        
+        imgGEl.className = 'card-img-top';
+        imgGEl.src = data.data[g].images.original.url;
+        
+        giphySection.appendChild(divGEl);
+        divGEl.appendChild(imgGEl);
+    };
+};
 
-        giphySection.appendChild(divEl);
-        divEl.appendChild(imgEl);
-    }
-}
+function getGameGiphy(event) {
+    var giphySearch = document.querySelector('#gameName');
+    var url = `https://api.giphy.com/v1/gifs/search?q=${giphySearch.value}&api_key=${giphyApiKey}&rating=pg-13`;
 
-function getGameGiphy() {
-    var url = `https://api.giphy.com/v1/gifs/search?q=${giphySearch}&api_key=${giphyApiKey}`;
-    var giphySearch = 'Fortnite';
-
+    event.preventDefault();
     fetch(url)
-        .then(function (response) {
-            return response.json();
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (data) {
+        console.log(data.data);
+        displayGiphy(data);
+    })
+};
 
-        })
-        
-        .then(function (data) {
-            console.log(data.data);
-            displayGiphy(data);
-        })
-
-
+function getAllGameInfo() {
+    getGameInfo(event);
+    getGameGiphy(event);
 }
-getGameGiphy();
+    
+    submitButton.addEventListener('click', getAllGameInfo);
+    lastBtn.addEventListener('click', prevImg);
+    nextBtn.addEventListener('click', nextImg);
