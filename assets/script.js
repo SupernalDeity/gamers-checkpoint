@@ -39,6 +39,7 @@ function displayScreenshot(data) {
         searchedGamesEl.appendChild(btn);
     };
 
+
     var nameEl = document.createElement('h1');
     var esrbEl = document.createElement('p');
     var metacriticEl = document.createElement('p');
@@ -143,9 +144,6 @@ function saveToLocal() {
 
 
 
-submitButton.addEventListener('click', saveToLocal);
-lastBtn.addEventListener('click', prevImg);
-nextBtn.addEventListener('click', nextImg);
 
 function initialDisplayGame() {
     initialGameInfo()
@@ -155,21 +153,21 @@ function initialDisplayGame() {
 function initialGameInfo() {
     var gameName = "";
     var newURL = `https://api.rawg.io/api/games?key=${apiKey}&search=${gameName}`;
-
+    
     fetch(newURL)
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (data) {
-            console.log(data.results);
-            initialDisplayScreenshot(data);
-        })
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (data) {
+        console.log(data.results);
+        initialDisplayScreenshot(data);
+    })
 };
 
 function initialDisplayScreenshot(data) {
     gameInfoBody.innerHTML = null;
     imgEl.src = data.results[0].short_screenshots[0].image;
-
+    
     var nameEl = document.createElement('h1');
     var esrbEl = document.createElement('p');
     var metacriticEl = document.createElement('p');
@@ -177,7 +175,7 @@ function initialDisplayScreenshot(data) {
     var ratingScoreEl = document.createElement('p');
     var ratingshEl = document.createElement('h4');
     var esrbhEl = document.createElement('h4');
-
+    
     var displayAllSearches = JSON.parse(localStorage.getItem('localGames')) || [];
     for (var v = 0; v < displayAllSearches.length; v++) {
         var btn = document.createElement('button');
@@ -185,9 +183,9 @@ function initialDisplayScreenshot(data) {
         btn.textContent = displayAllSearches[v];
         searchedGamesEl.appendChild(btn);
     };
-
+    
     nameEl.className = "text-center"
-
+    
     nameEl.textContent = data.results[0].name;
     esrbEl.textContent = "ESRB Rating: " + data.results[0].esrb_rating.name;
     metacriticEl.textContent = "Metacritic: " + data.results[0].metacritic;
@@ -195,7 +193,7 @@ function initialDisplayScreenshot(data) {
     genreshEl.textContent = 'Genres: ';
     ratingshEl.textContent = 'Ratings: ';
     esrbhEl.textContent = 'ESRB: ';
-
+    
     gameInfoBody.appendChild(nameEl);
     gameInfoBody.appendChild(esrbhEl);
     gameInfoBody.appendChild(esrbEl);
@@ -213,7 +211,7 @@ function initialDisplayScreenshot(data) {
         ratingsEl.textContent = 'Rating: ' + data.results[0].ratings[x].title + ' -- Count: ' + data.results[0].ratings[x].count + ' -- ' + data.results[0].ratings[x].percent + '%';
         gameInfoBody.appendChild(ratingsEl);
     };
-
+    
 };
 
 function initialDisplayGiphy(data) {
@@ -221,13 +219,13 @@ function initialDisplayGiphy(data) {
     for (var g = 0; g < 5; g++) {
         var divGEl = document.createElement('div');
         var imgGEl = document.createElement('img');
-
+        
         divGEl.className = 'card col-12 col-md-2 m-4 border-0';
         divGEl.style.width = '18rem';
-
+        
         imgGEl.className = 'card-img-top';
         imgGEl.src = data.data[g].images.original.url;
-
+        
         giphySection.appendChild(divGEl);
         divGEl.appendChild(imgGEl);
     };
@@ -236,16 +234,36 @@ function initialDisplayGiphy(data) {
 function initialGameGiphy() {
     var giphySearch = "GTA 5";
     var url = `https://api.giphy.com/v1/gifs/search?q=${giphySearch}&api_key=${giphyApiKey}&rating=pg-13`;
-
+    
     fetch(url)
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (data) {
-            console.log(data.data);
-            initialDisplayGiphy(data);
-        })
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (data) {
+        console.log(data.data);
+        initialDisplayGiphy(data);
+    })
 };
 
 initialDisplayGame();
 
+function oldSearches(event) {
+    event.preventDefault();
+    if (event.target.matches('button')) {
+        var oldGameSearch = event.target.textContent;
+        console.log(oldGameSearch);
+        var btnUrl = `https://api.rawg.io/api/games?key=${apiKey}&search=${oldGameSearch}`;
+        fetch(btnUrl)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            displayScreenshot(data);
+        })
+    };
+};
+
+submitButton.addEventListener('click', saveToLocal);
+lastBtn.addEventListener('click', prevImg);
+nextBtn.addEventListener('click', nextImg);
+searchedGamesEl.addEventListener('click', oldSearches);
