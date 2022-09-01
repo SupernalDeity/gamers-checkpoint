@@ -9,6 +9,7 @@ var imgEl = document.querySelector('#imgEl');
 var gameInfoBody = document.querySelector('#gameInfoBody');
 var giphySection = document.querySelector('#giphySection');
 var buttonsEl = document.querySelector('#buttons');
+var searchedGamesEl = document.querySelector('#searchedGames');
 
 function getGameInfo(event) {
     var gameName = document.querySelector('#gameName');
@@ -28,6 +29,15 @@ function getGameInfo(event) {
 function displayScreenshot(data) {
     gameInfoBody.innerHTML = null;
     imgEl.src = data.results[0].short_screenshots[i].image;
+    searchedGamesEl.innerHTML = null;
+
+    var displayAllSearches = JSON.parse(localStorage.getItem('localGames')) || [];
+    for (var v = 0; v < displayAllSearches.length; v++) {
+        var btn = document.createElement('button');
+        btn.className = 'btn btn-primary mx-2';
+        btn.textContent = displayAllSearches[v];
+        searchedGamesEl.appendChild(btn);
+    };
 
     var nameEl = document.createElement('h1');
     var esrbEl = document.createElement('p');
@@ -123,19 +133,17 @@ function getGameGiphy(event) {
 
 function saveToLocal() {
     var game = document.querySelector('#gameName');
-    var savedGames = JSON.parse(localStorage.getItem('searchedGames')) || [];
-    savedGames.push(game);
+    var savedGames = JSON.parse(localStorage.getItem('localGames')) || [];
+    savedGames.push(game.value);
     var data = JSON.stringify(savedGames);
-    localStorage.setItem('searchedGames', data);
-};
-
-function getAllGameInfo() {
+    localStorage.setItem('localGames', data);
     getGameInfo(event);
     getGameGiphy(event);
-    saveToLocal();
 };
 
-submitButton.addEventListener('click', getAllGameInfo);
+
+
+submitButton.addEventListener('click', saveToLocal);
 lastBtn.addEventListener('click', prevImg);
 nextBtn.addEventListener('click', nextImg);
 
@@ -169,6 +177,14 @@ function initialDisplayScreenshot(data) {
     var ratingScoreEl = document.createElement('p');
     var ratingshEl = document.createElement('h4');
     var esrbhEl = document.createElement('h4');
+
+    var displayAllSearches = JSON.parse(localStorage.getItem('localGames')) || [];
+    for (var v = 0; v < displayAllSearches.length; v++) {
+        var btn = document.createElement('button');
+        btn.className = 'btn btn-primary mx-2';
+        btn.textContent = displayAllSearches[v];
+        searchedGamesEl.appendChild(btn);
+    };
 
     nameEl.className = "text-center"
 
