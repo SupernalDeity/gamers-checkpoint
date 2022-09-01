@@ -95,15 +95,15 @@ nextBtn.addEventListener('click', nextImg);
 
 
 
-function displayGiphy (data){
+function displayGiphy(data){
     for (var g = 0; g > 5; g++){
-        var divEl = document.createElement ('div');
+        var divEl = document.createElement('div');
         divEl.className = 'card col-12 col-md-2 m-4';
         divEl.style.width = '18rem';
         
-        var imgEl = document.createElement ('img');
+        var imgEl = document.createElement('img');
         imgEl.className = 'card-img-top';
-        imgEl.src = data[g].images.original.url;
+        imgEl.src = data.data[g].images.original.url;
 
         giphySection.appendChild(divEl);
         divEl.appendChild(imgEl);
@@ -112,7 +112,7 @@ function displayGiphy (data){
 
 function getGameGiphy() {
     var url = `https://api.giphy.com/v1/gifs/search?q=${giphySearch}&api_key=${giphyApiKey}`;
-    var giphySearch = 'Fortite'
+    var giphySearch = 'Fortnite';
 
     fetch(url)
         .then(function (response) {
