@@ -8,6 +8,7 @@ var nextBtn = document.querySelector('#next');
 var imgEl = document.querySelector('#imgEl');
 var gameInfoBody = document.querySelector('#gameInfoBody');
 var giphySection = document.querySelector('#giphySection');
+var buttonsEl = document.querySelector('#buttons');
 
 function getGameInfo(event) {
     var gameName = document.querySelector('#gameName');
@@ -36,7 +37,7 @@ function displayScreenshot(data) {
     var ratingshEl = document.createElement('h4');
     var esrbhEl = document.createElement('h4');
 
-    nameEl.className = "text-center"
+    nameEl.className = "text-center";
 
     nameEl.textContent = data.results[0].name;
     esrbEl.textContent = "ESRB Rating: " + data.results[0].esrb_rating.name;
@@ -45,6 +46,8 @@ function displayScreenshot(data) {
     genreshEl.textContent = 'Genres: ';
     ratingshEl.textContent = 'Ratings: ';
     esrbhEl.textContent = 'ESRB: ';
+    lastBtn.textContent = 'Prev';
+    nextBtn.textContent = 'Next';
 
     gameInfoBody.appendChild(nameEl);
     gameInfoBody.appendChild(esrbhEl);
@@ -133,7 +136,7 @@ function getAllGameInfo() {
     };
     
     function initialGameInfo() {
-        var gameName = "Cyberpunk 2077";
+        var gameName = "";
         var newURL = `https://api.rawg.io/api/games?key=${apiKey}&search=${gameName}`;
     
         fetch(newURL)
@@ -148,7 +151,7 @@ function getAllGameInfo() {
     
     function initialDisplayScreenshot(data) {
         gameInfoBody.innerHTML = null;
-        imgEl.src = data.results[0].short_screenshots[i].image;
+        imgEl.src = data.results[0].short_screenshots[0].image;
     
         var nameEl = document.createElement('h1');
         var esrbEl = document.createElement('p');
@@ -187,27 +190,7 @@ function getAllGameInfo() {
         };
     
     };
-    
-    function prevImg() {
-        if (i == 0) {
-            i == 6;
-        }
-        else {
-            i--;
-        }
-        initialGameInfo();
-    };
-    
-    function nextImg() {
-        if (i == 6) {
-            i == 0;
-        }
-        else {
-            i++;
-        }
-        initialGameInfo();
-    };
-    
+
     function initialDisplayGiphy(data) {
         giphySection.innerHTML = null;
         for (var g = 0; g < 5; g++){
@@ -226,7 +209,7 @@ function getAllGameInfo() {
     };
     
     function initialGameGiphy() {
-        var giphySearch = "Cyberpunk 2077";
+        var giphySearch = "GTA 5";
         var url = `https://api.giphy.com/v1/gifs/search?q=${giphySearch}&api_key=${giphyApiKey}&rating=pg-13`;
     
         fetch(url)
