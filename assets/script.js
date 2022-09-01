@@ -28,24 +28,42 @@ function displayScreenshot(data) {
 
     var nameEl = document.createElement('h1');
     var esrbEl = document.createElement('p');
-    // var genresEl = document.createElement('p');
     var metacriticEl = document.createElement('p');
+    var genreshEl = document.createElement('h4');
     var ratingScoreEl = document.createElement('p');
+    var ratingshEl = document.createElement('h4');
+    var esrbhEl = document.createElement('h4');
     // var ratingsEl = document.createElement('p');
-
+    
     nameEl.className = "text-center"
-
+    
     nameEl.textContent = data.results[0].name;
     esrbEl.textContent = "ESRB Rating: " + data.results[0].esrb_rating.name;
     // genresEl.textContent = data.results[0].name;
     metacriticEl.textContent = "Metacritic: " + data.results[0].metacritic;
     ratingScoreEl.textContent = "Rating: " + data.results[0].rating;
+    genreshEl.textContent = 'Genres: ';
+    ratingshEl.textContent = 'Ratings: ';
+    esrbhEl.textContent = 'ESRB: ';
     // ratingsEl.textContent = data.results[0].name;
-
+    
     gameInfoBody.appendChild(nameEl);
+    gameInfoBody.appendChild(esrbhEl);
     gameInfoBody.appendChild(esrbEl);
+    gameInfoBody.appendChild(genreshEl);
+    for (var y = 0; y < data.results[0].genres.length; y++) {
+        var genresEl = document.createElement('p');
+        genresEl.textContent = ''+  data.results[0].genres[y].name;
+        gameInfoBody.appendChild(genresEl);
+    };
+    gameInfoBody.appendChild(ratingshEl);
     gameInfoBody.appendChild(metacriticEl);
     gameInfoBody.appendChild(ratingScoreEl);
+    for (var x = 0; x < data.results[0].ratings.length; x++) {
+        var ratingsEl = document.createElement('p');
+        ratingsEl.textContent = 'Rating: ' + data.results[0].ratings[x].title + ' -- Count: ' + data.results[0].ratings[x].count + ' -- ' + data.results[0].ratings[x].percent + '%';
+        gameInfoBody.appendChild(ratingsEl);
+    };
     
 };
 
