@@ -39,8 +39,6 @@ function displayScreenshot(data) {
         searchedGamesEl.appendChild(btn);
     };
 
-
-
     var nameEl = document.createElement('h1');
     var esrbEl = document.createElement('p');
     var metacriticEl = document.createElement('p');
