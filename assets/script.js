@@ -11,6 +11,8 @@ var giphySection = document.querySelector('#giphySection');
 var buttonsEl = document.querySelector('#buttons');
 var searchedGamesEl = document.querySelector('#searchedGames');
 
+var currentGameDetail = [];
+
 function getGameInfo(event) {
     event.preventDefault();
     var gameName = document.querySelector('#gameName');
@@ -31,13 +33,14 @@ function searchGameInfo (gameUrl){
         })
         .then(function (data) {
             console.log(data.results);
-            displayScreenshot(data);
+            currentGameDetail = data.results;
+            displayScreenshot();
         })
 };
 
-function displayScreenshot(data) {
+function displayScreenshot(index = 0) {
     gameInfoBody.innerHTML = null;
-    imgEl.src = data.results[0].short_screenshots[i].image;
+    imgEl.src = currentGameDetail[0].short_screenshots[index].image;
     searchedGamesEl.innerHTML = null;
 
     var displayAllSearches = JSON.parse(localStorage.getItem('localGames')) || [];
@@ -59,10 +62,10 @@ function displayScreenshot(data) {
     nameEl.className = "text-center";
     nameEl.setAttribute('id','gameHeader')
 
-    nameEl.textContent = data.results[0].name;
-    esrbEl.textContent = "ESRB Rating: " + data.results[0].esrb_rating.name;
-    metacriticEl.textContent = "Metacritic: " + data.results[0].metacritic;
-    ratingScoreEl.textContent = "Rating: " + data.results[0].rating;
+    nameEl.textContent = currentGameDetail[0].name;
+    esrbEl.textContent = "ESRB Rating: " + currentGameDetail[0].esrb_rating.name;
+    metacriticEl.textContent = "Metacritic: " + currentGameDetail[0].metacritic;
+    ratingScoreEl.textContent = "Rating: " + currentGameDetail[0].rating;
     genreshEl.textContent = 'Genres: ';
     ratingshEl.textContent = 'Ratings: ';
     esrbhEl.textContent = 'ESRB: ';
@@ -73,17 +76,17 @@ function displayScreenshot(data) {
     gameInfoBody.appendChild(esrbhEl);
     gameInfoBody.appendChild(esrbEl);
     gameInfoBody.appendChild(genreshEl);
-    for (var y = 0; y < data.results[0].genres.length; y++) {
+    for (var y = 0; y < currentGameDetail[0].genres.length; y++) {
         var genresEl = document.createElement('p');
-        genresEl.textContent = '' + data.results[0].genres[y].name;
+        genresEl.textContent = '' + currentGameDetail[0].genres[y].name;
         gameInfoBody.appendChild(genresEl);
     };
     gameInfoBody.appendChild(ratingshEl);
     gameInfoBody.appendChild(metacriticEl);
     gameInfoBody.appendChild(ratingScoreEl);
-    for (var x = 0; x < data.results[0].ratings.length; x++) {
+    for (var x = 0; x < currentGameDetail[0].ratings.length; x++) {
         var ratingsEl = document.createElement('p');
-        ratingsEl.textContent = 'Rating: ' + data.results[0].ratings[x].title + ' -- Count: ' + data.results[0].ratings[x].count + ' -- ' + data.results[0].ratings[x].percent + '%';
+        ratingsEl.textContent = 'Rating: ' + currentGameDetail[0].ratings[x].title + ' -- Count: ' + currentGameDetail[0].ratings[x].count + ' -- ' + currentGameDetail[0].ratings[x].percent + '%';
         gameInfoBody.appendChild(ratingsEl);
     };
 
@@ -96,7 +99,7 @@ function prevImg() {
     else {
         i--;
     }
-    setSearchName();
+    displayScreenshot(i);
 };
 
 function nextImg() {
@@ -106,23 +109,24 @@ function nextImg() {
     else {
         i++;
     }
-    setSearchName();
+    displayScreenshot(i);
 };
 
 function displayGiphy(data) {
     giphySection.innerHTML = null;
     for (var g = 0; g < 5; g++) {
         var divGEl = document.createElement('div');
+        var cardEl = document.createElement('div');
         var imgGEl = document.createElement('img');
 
-        divGEl.className = 'card col-12 col-md-2 m-4 border-0';
-        divGEl.style.width = '18rem';
-
-        imgGEl.className = 'card-img-top';
+        divGEl.className = 'col-12 col-lg';
+        cardEl.className = 'card m-2 p-2';
+        imgGEl.className = 'img-fluid';
         imgGEl.src = data.data[g].images.original.url;
 
         giphySection.appendChild(divGEl);
-        divGEl.appendChild(imgGEl);
+        divGEl.appendChild(cardEl);
+        cardEl.appendChild(imgGEl);
     };
 };
 
