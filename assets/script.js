@@ -43,7 +43,7 @@ function displayScreenshot(data) {
     var displayAllSearches = JSON.parse(localStorage.getItem('localGames')) || [];
     for (var v = 0; v < displayAllSearches.length; v++) {
         var btn = document.createElement('button');
-        btn.className = 'btn btn-primary mx-2';
+        btn.className = 'btn btn-primary mx-2 mb-2';
         btn.textContent = displayAllSearches[v];
         searchedGamesEl.appendChild(btn);
     };
