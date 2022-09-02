@@ -10,7 +10,6 @@
 * [Support](#support)
 * [License](#license)
 
-
 ## Description
 Website used to search information about current games, including genre, ratings, ESRB ratings and visual elements for the games.
 
