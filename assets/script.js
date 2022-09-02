@@ -18,6 +18,12 @@ function getGameInfo(event) {
     searchGameInfo(gameUrl);
 };
 
+function setSearchName() {
+    var gameTitle = document.querySelector('#gameHeader')
+    var gameUrl = `https://api.rawg.io/api/games?key=${apiKey}&search=${gameTitle.textContent}`;
+    searchGameInfo(gameUrl);
+};
+
 function searchGameInfo (gameUrl){
     fetch(gameUrl)
         .then(function (response) {
@@ -42,7 +48,6 @@ function displayScreenshot(data) {
         searchedGamesEl.appendChild(btn);
     };
 
-
     var nameEl = document.createElement('h1');
     var esrbEl = document.createElement('p');
     var metacriticEl = document.createElement('p');
@@ -52,6 +57,7 @@ function displayScreenshot(data) {
     var esrbhEl = document.createElement('h4');
 
     nameEl.className = "text-center";
+    nameEl.setAttribute('id','gameHeader')
 
     nameEl.textContent = data.results[0].name;
     esrbEl.textContent = "ESRB Rating: " + data.results[0].esrb_rating.name;
@@ -90,7 +96,7 @@ function prevImg() {
     else {
         i--;
     }
-    getGameInfo(event);
+    setSearchName();
 };
 
 function nextImg() {
@@ -100,7 +106,7 @@ function nextImg() {
     else {
         i++;
     }
-    getGameInfo(event);
+    setSearchName();
 };
 
 function displayGiphy(data) {
