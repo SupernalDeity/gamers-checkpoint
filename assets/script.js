@@ -20,12 +20,6 @@ function getGameInfo(event) {
     searchGameInfo(gameUrl);
 };
 
-function setSearchName() {
-    var gameTitle = document.querySelector('#gameHeader')
-    var gameUrl = `https://api.rawg.io/api/games?key=${apiKey}&search=${gameTitle.textContent}`;
-    searchGameInfo(gameUrl);
-};
-
 function searchGameInfo (gameUrl){
     fetch(gameUrl)
         .then(function (response) {
